@@ -35,3 +35,8 @@ Start Application
 ```bash
 make start
 ```
+
+### Test
+In your browser try accessing "https://127.0.0.1" - The page should load normally (no auth).
+In your browser try accessing "https://127.0.0.1/secret" - You should get redirect to the auth0 authentication page.
+
