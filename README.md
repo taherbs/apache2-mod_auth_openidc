@@ -2,7 +2,7 @@
 
 Apache web server with Auth0 authentication/authorization mechanism using [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc).
 
-**Note:** This project contains 2 dockerfile defining the plaform on 2 different platforms, [Centos](./Dockerfile-centos) and [Ubuntu16.04](./Dockerfile-ubuntu).
+**Note:** This project contains 2 dockerfile defining the plaform for [Centos](./Dockerfile-centos) and [Ubuntu16.04](./Dockerfile-ubuntu) based plaforms.
 
 ### Prerequisites:
 * [Docker](https://docs.docker.com/install/)
@@ -15,7 +15,7 @@ Apache web server with Auth0 authentication/authorization mechanism using [mod_a
 | ![](doc/create_app_1.png "") | ![](doc/create_app_2.png "") |
 |:---:|:---:|
 
-3- Go yo your application **settings** add a new entry to **Allowed Callback URLs** equal to the <code>OIDC_REDIRECT_URL</code> param you will set later in the **env_vars** file. Then, go to OAuth section in advanced settings and change <code>JsonWebToken Token Signature Algorithm</code> to <code>RS256</code>.
+3- Go yo your application **settings** add a new entry to **Allowed Callback URLs** equal to the <code>OIDC_REDIRECT_URL</code> param you will set later in the **[env_vars](./env_vars)** file. Then,  in **advanced settings** go to the **OAuth** section and change <code>JsonWebToken Token Signature Algorithm</code> param to <code>RS256</code>.
 
 | ![](doc/config_app_1.png "") | ![](doc/config_app_2.png "") |
 |:---:|:---:|
@@ -37,7 +37,7 @@ make start
 
 ### Change Makefile Container platform
 By default the make file is automating the deployment of the [Centos](./Dockerfile-centos) version of the project.
-If you want to change that and deploy the [Ubuntu16.04](./Dockerfile-ubuntu) version, update the [Makefile](./Makefile) <code>PLATFORM</code> variable to "ubuntu".
+If you want to change that and deploy the [Ubuntu16.04](./Dockerfile-ubuntu) version, update the [Makefile](./Makefile#L6) <code>PLATFORM</code> variable to "ubuntu".
 
 ### Test
 In your browser try accessing "https://127.0.0.1" - The page should load normally (no auth).<br>
