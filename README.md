@@ -12,15 +12,15 @@ Apache web server with Auth0 authentication/authorization mechanism using [mod_a
 
 2- Create a new application.
 
-| ![](https://github.com/taherbs/apache2-mod_auth_openidc/blob/master/doc/create_app_1.png "") | ![](https://github.com/taherbs/apache2-mod_auth_openidc/blob/master/doc/create_app_2.png "") |
+| ![](https://raw.githubusercontent.com/taherbs/apache2-mod_auth_openidc/master/doc/create_app_1.png "") | ![](https://raw.githubusercontent.com/taherbs/apache2-mod_auth_openidc/master/doc/create_app_2.png "") |
 |:---:|:---:|
 
 3- Go yo your application **settings** add a new entry to **Allowed Callback URLs** equal to the `OIDC_REDIRECT_URL` param you will set later in the **[env_vars](https://github.com/taherbs/apache2-mod_auth_openidc/blob/master/env_vars)** file. Then,  in **advanced settings** go to the **OAuth** section and change `JsonWebToken Token Signature Algorithm` param to`RS256`.
 
-| ![](https://github.com/taherbs/apache2-mod_auth_openidc/blob/master/doc/config_app_1.png "") | ![](https://github.com/taherbs/apache2-mod_auth_openidc/blob/master/doc/config_app_2.png "") |
+| ![](https://raw.githubusercontent.com/taherbs/apache2-mod_auth_openidc/master/doc/config_app_1.png "") | ![](https://raw.githubusercontent.com/taherbs/apache2-mod_auth_openidc/master/doc/config_app_2.png "") |
 |:---:|:---:|
 
-| ![](https://github.com/taherbs/apache2-mod_auth_openidc/blob/master/doc/config_app_3.png "") | ![](https://github.com/taherbs/apache2-mod_auth_openidc/blob/master/doc/config_app_4.png "") |
+| ![](https://raw.githubusercontent.com/taherbs/apache2-mod_auth_openidc/master/doc/config_app_3.png "") | ![](https://raw.githubusercontent.com/taherbs/apache2-mod_auth_openidc/master/doc/config_app_4.png "") |
 |:---:|:---:|
 
 **Note:** You can as well use one of your existing applications just make sure that your application settings is set properly.
