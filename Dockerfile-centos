@@ -52,7 +52,8 @@ RUN . ./env_vars && \
 	-i /etc/httpd/conf.d/ssl.conf && \
 	rm env_vars
 
-# Expose https
+# Expose http and https
 EXPOSE 443
+EXPOSE 80
 
 CMD ["/bin/sh", "-c", "rm -rf /run/httpd/* /tmp/httpd* && apachectl -DFOREGROUND"]

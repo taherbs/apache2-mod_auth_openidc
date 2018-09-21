@@ -1,0 +1,67 @@
+FROM ubuntu:16.04
+LABEL maintainer=bensalemtaher@gmail.com
+ARG MOD_AUTH_OPENIDC_DEB=https://github.com/zmartzone/mod_auth_openidc/releases/download/v2.3.3/libapache2-mod-auth-openidc_2.3.3-1.xenial.1_amd64.deb
+ARG LIBCJOSE=https://github.com/zmartzone/mod_auth_openidc/releases/download/v2.3.0/libcjose0_0.5.1-1.xenial.1_amd64.deb
+
+RUN apt-get update &&\
+	apt-get -y upgrade
+
+# Install apache and dependency packages
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 curl wget libjansson4 libhiredis0.13 libcurl3
+
+RUN wget $LIBCJOSE -O libcjose.deb && \
+	dpkg -i libcjose.deb && \
+	rm libcjose.deb
+
+RUN wget $MOD_AUTH_OPENIDC_DEB -O libapache2-mod-auth-openidc.deb && \
+	dpkg -i libapache2-mod-auth-openidc.deb && \
+	rm libapache2-mod-auth-openidc.deb
+
+# Enable apache mods.
+RUN a2enmod rewrite
+RUN a2enmod ssl
+RUN a2enmod auth_openidc
+
+# Manually set up the apache environment variables
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOCK_DIR /var/lock/apache2
+ENV APACHE_PID_FILE /var/run/apache2.pid
+
+# COPY key/cert
+RUN mkdir -p /etc/apache2/ssl
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-keyout /etc/apache2/ssl/server.key \
+	-out /etc/apache2/ssl/server.crt \
+	-subj "/C=US/ST=MA/L=Boston/O=T.Tech/OU=IT DevOps/CN=localhost"
+
+# Copy site into place.
+ADD app /var/www/site/app
+
+# Update the default apache site with the config we created.
+ADD ./conf/ubuntu/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
+ADD ./conf/ubuntu/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
+
+# Import env variables and update httpd conf with the right params
+COPY env_vars .
+RUN . ./env_vars && \
+	sed \
+	-e "s|OIDC_PASS_PHRASE|${OIDC_PASS_PHRASE}|g" \
+	-e "s|OIDC_METADATA_URL|${OIDC_METADATA_URL}|g" \
+	-e "s|OIDC_CLIENT_ID|${OIDC_CLIENT_ID}|g" \
+	-e "s|OIDC_SCOPE|${OIDC_SCOPE}|g" \
+	-e "s|OIDC_CLIENT_SECRET|${OIDC_CLIENT_SECRET}|g" \
+	-e "s|OIDC_REDIRECT_URL|${OIDC_REDIRECT_URL}|g" \
+	-e "s|OIDC_RESPONSE_TYPE|${OIDC_RESPONSE_TYPE}|g" \
+	-e "s|OIDC_PASS_CLAILS_AS|${OIDC_PASS_CLAILS_AS}|g" \
+	-e "s|OIDC_CLAIM_PREFIX|${OIDC_CLAIM_PREFIX}|g" \
+	-e "s|OIDC_PASS_ID_TOKEN_AS|${OIDC_PASS_ID_TOKEN_AS}|g" \
+	-i /etc/apache2/sites-enabled/default-ssl.conf && \
+	rm env_vars
+
+# Expose http and https
+EXPOSE 443
+EXPOSE 80
+
+# By default, simply start apache.
+CMD /usr/sbin/apache2ctl -D FOREGROUND

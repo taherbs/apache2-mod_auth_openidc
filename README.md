@@ -2,6 +2,8 @@
 
 Apache web server with Auth0 authentication/authorization mechanism using [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc).
 
+**Note:** This project contains 2 dockerfile defining the plaform on 2 different platforms, [Centos](./Dockerfile-centos) and [Ubuntu16.04](./Dockerfile-ubuntu).
+
 ### Prerequisites:
 * [Docker](https://docs.docker.com/install/)
 
@@ -24,17 +26,18 @@ Apache web server with Auth0 authentication/authorization mechanism using [mod_a
 **Note:** You can as well use one of your existing applications just make sure that your application settings is set properly.
 
 ### Setup project env vars:
-Create and update properly the env_vars file
-```bash
-# Create the env_vars from the existing sample file 
-cp env_vars.sample env_vars
-```
+Update the [env_vars](./env_vars) file properly.
+
 
 ### Usage
 Start Application
 ```bash
 make start
 ```
+
+### Change Makefile Container platform
+By default the make file is automating the deployment of the [Centos](./Dockerfile-centos) version of the project.
+If you want to change that and deploy the [Ubuntu16.04](./Dockerfile-ubuntu) version, update the [Makefile](./Makefile) <code>PLATFORM</code> variable to "ubuntu".
 
 ### Test
 In your browser try accessing "https://127.0.0.1" - The page should load normally (no auth).<br>
