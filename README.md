@@ -1,4 +1,5 @@
-## Apache2 Auth0 mod_auth_openidc - Docker
+# Apache2 Auth0 mod_auth_openidc - Docker
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/taherbs/apache2-mod_auth_openidc/master/LICENSE)
 
 Apache web server with Auth0 authentication/authorization mechanism using [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc).
 
